@@ -891,7 +891,10 @@ function _loadTracking(){
   ['901335525837933','1435316934639038','2157661164979333','1930652510882312','1304063911565424','797801516088163','885506097636747','1910035972952167','720191869105205','948108371311229','2110494179736153','765219526670557'].forEach(function(id){fbq('init',id)});
   fbq('track','PageView');
 }
-
+['scroll','mousemove','touchstart','click'].forEach(function(ev){
+  window.addEventListener(ev,_loadTracking,{once:true,passive:true});
+});
+setTimeout(_loadTracking,1000);
 </script>
 
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=901335525837933&ev=PageView&noscript=1"/></noscript>

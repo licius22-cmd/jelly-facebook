@@ -3,13 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Health News - Special Report</title>
+<title>CNN Health</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<!-- Preconnects críticos -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://cdn.converteai.net">
- 
+
+<script>
+	window.clickbank = {
+		vendor: "jellylean"
+	}
+</script>
+<script src="https://scripts.clickbank.net/hop.min.js" defer></script>
+
 <script>!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);</script>
 <link rel="preload" href="https://scripts.converteai.net/6e3ae2f6-ad64-483b-9bc5-bafc50ec8005/players/69bc95e8d54d8d20f10299e7/v4/player.js" as="script">
 <link rel="preload" href="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js" as="script">
@@ -19,137 +24,218 @@
 <link rel="dns-prefetch" href="https://images.converteai.net">
 <link rel="dns-prefetch" href="https://api.vturb.com.br">
 
-<!-- Fontes não bloqueantes -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet"></noscript>
 
-<!-- Font Awesome não bloqueante -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 
-<!-- Affiliate track -->
-<script src="https://cdn.nlabs.cloud/assets/main/js/affiliate-trackcontrol.min.js" defer></script>
+<!-- VTurb delay: oculta o quiz ate o player liberar -->
+<style>.esconder { display: none; }</style>
 
 <style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  :root{
-    --red:#FD4C31;
-    --green:#00A815;
-    --green-dark:#008f12;
-    --dark:#0f172a;
-    --gray:#64748b;
-    --border:#e2e8f0;
-  }
-  html{scroll-behavior:smooth}
-  body{font-family:'Inter',sans-serif;background:#f1f5f9;color:#0f172a;overflow-x:hidden}
+/* RESET */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* HEADER */
-  .site-header{background:#000;padding:1rem;width:100%;box-shadow:0 2px 8px rgba(0,0,0,.4);position:relative;z-index:20}
-  .site-header__inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
-  .site-header button{background:none;border:none;color:#fff;cursor:pointer;line-height:0}
-  .site-logo{color:#fff;font-size:1.5rem;font-weight:700;letter-spacing:.5px}
-  .site-logo span{color:var(--red)}
+:root {
+  --red: #cc0000;
+  --green: #1a8a1a;
+  --text: #111;
+  --muted: #555;
+  --border: #e0e0e0;
+  --bg: #f5f5f5;
+  --white: #fff;
+  --fb-blue: #365899;
+  --font-head: 'Merriweather', Georgia, serif;
+  --font-body: 'Source Sans 3', Arial, sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--white); color: var(--text); font-size: 16px; line-height: 1.5; }
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
 
-  /* TICKER */
-  .ticker{background:var(--red);padding:.5rem 0;overflow:hidden;width:100%;position:relative;z-index:10}
-  .ticker__track{display:inline-block;white-space:nowrap;animation:ticker 20s linear infinite}
-  .ticker__track span{color:#fff;font-weight:700;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase}
-  @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+/* HEADER */
+.main-header { background: var(--white); border-bottom: 2px solid var(--red); position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+.header-inner { display: flex; align-items: center; justify-content: space-between; height: 52px; }
+.header-left { display: flex; align-items: center; gap: .5rem; }
+#menuBtn { background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--text); padding: .3rem; display: block; }
+.logo { display: flex; align-items: center; }
+.logo-cnn  { color: var(--red); font-weight: 900; font-size: 1.6rem; font-family: var(--font-head); letter-spacing: -1px; }
+.logo-health { color: var(--text); font-weight: 700; font-size: 1.1rem; margin-left: .35rem; }
+.main-nav { display: none; gap: 1.5rem; align-items: center; }
+.main-nav a { font-weight: 600; font-size: .9rem; color: var(--text); transition: color .2s; }
+.main-nav a:hover { color: var(--red); }
+.header-right { display: flex; align-items: center; gap: 1rem; }
+.hd-link { display: none; align-items: center; gap: .3rem; font-size: .85rem; font-weight: 600; color: var(--muted); }
+.hd-link:hover { color: var(--red); }
+.live-tv { color: var(--red) !important; }
+.search-btn { background: none; border: none; cursor: pointer; font-size: 1rem; padding: .3rem; color: var(--text); }
+.sign-btn { background: none; border: 1px solid var(--border); border-radius: 99px; cursor: pointer; font-size: .85rem; padding: .25rem .7rem; color: var(--text); font-family: var(--font-body); font-weight: 600; transition: all .2s; }
+.sign-btn:hover { color: var(--red); border-color: var(--red); }
+.mobile-menu { display: none; background: var(--white); border-top: 1px solid var(--border); padding: .75rem 1rem; }
+.mobile-menu.open { display: block; }
+.mobile-menu a { display: block; padding: .5rem 0; font-weight: 700; border-bottom: 1px solid var(--border); }
+.mobile-menu a:last-child { border-bottom: none; }
+@media (min-width: 768px) {
+  #menuBtn { display: none; }
+  .main-nav { display: flex; }
+  .hd-link { display: flex; }
+}
 
-  /* MAIN */
-  .main-wrap{width:100%;max-width:1000px;margin:0 auto;background:#fff;box-shadow:0 4px 32px rgba(0,0,0,.12);min-height:100vh;padding-bottom:3rem}
+/* HERO */
+.hero { padding: 1rem 0 .5rem; }
+.breaking-badge { display: inline-block; background: rgba(204,0,0,.1); color: var(--red); font-weight: 700; font-size: .72rem; text-transform: uppercase; letter-spacing: 1.5px; padding: .2rem .5rem; border-radius: 3px; margin-bottom: .75rem; }
+.hero h1 { font-family: var(--font-head); font-size: 1.1rem; font-weight: 900; line-height: 1.3; color: var(--text); margin-bottom: .5rem; }
+.article-meta { display: flex; flex-wrap: wrap; gap: .5rem 1rem; font-size: .78rem; color: var(--muted); margin-bottom: .75rem; align-items: center; }
+.article-meta .author { font-weight: 700; color: var(--red); }
+@media (min-width: 768px) { .hero h1 { font-size: 1.9rem; } }
 
-  /* VIDEO */
-  .video-wrap{position:relative;width:100%;background:#000;aspect-ratio:16/9}
+/* VIDEO */
+.video-wrap { background: #111; border-radius: 8px; overflow: hidden; margin: .75rem 0 1.25rem; box-shadow: 0 6px 24px rgba(0,0,0,.18); }
+.video-topbar { background: var(--red); padding: .55rem 1rem; display: flex; align-items: center; justify-content: space-between; color: #fff; }
+.video-topbar-left { display: flex; align-items: center; gap: .5rem; font-weight: 700; font-size: .9rem; }
+.watch-badge { background: rgba(0,0,0,.35); font-size: .72rem; font-weight: 700; padding: .2rem .6rem; border-radius: 3px; }
+.video-body { padding: .75rem; background: #000; }
+vturb-smartplayer { display: block; margin: 0 auto; width: 100%; }
+.video-footer { display: flex; justify-content: space-between; align-items: center; padding: .6rem 1rem; border-top: 1px solid #333; background: #1a1a1a; }
+.live-ind { display: flex; align-items: center; gap: .4rem; color: #ff4444; font-weight: 700; font-size: .82rem; }
+.live-dot { width: 8px; height: 8px; background: #ff4444; border-radius: 50%; animation: blink 1.2s infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.rec-warn { font-size: .72rem; color: #aaa; }
 
-  /* LIVE BADGE */
-  .live-bar{background:#fff;padding:.75rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:.5rem}
-  .live-dot{position:relative;display:flex;height:10px;width:10px}
-  .live-dot__ping{position:absolute;inset:0;border-radius:50%;background:#f87171;opacity:.75;animation:ping 1s cubic-bezier(0,0,.2,1) infinite}
-  .live-dot__solid{position:relative;border-radius:50%;height:10px;width:10px;background:var(--red)}
-  @keyframes ping{75%,100%{transform:scale(2);opacity:0}}
-  .live-text{font-weight:700;font-size:.875rem;color:#374151}
+/* TAGS */
+.tags-section { background: var(--bg); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; text-align: center; }
+.tags-label { font-size: .82rem; color: var(--muted); margin-bottom: .6rem; display: flex; align-items: center; justify-content: center; gap: .4rem; }
+.tags-list { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; }
+.tag { background: var(--white); border: 1px solid var(--border); border-radius: 99px; font-size: .8rem; padding: .2rem .7rem; }
 
-  /* LOGOS */
-  .logos-bar{background:#fff;padding:1.25rem 1rem;border-bottom:1px solid var(--border)}
-  .logos-bar__inner{display:flex;align-items:center;justify-content:center;gap:2.5rem;flex-wrap:wrap}
-  .logos-bar img{height:2.75rem;width:auto;object-fit:contain;filter:grayscale(1);opacity:.6;transition:all .2s}
-  .logos-bar img:hover{filter:grayscale(0);opacity:1}
+/* QUIZ */
+.quiz-outer { background: linear-gradient(135deg, #0a1628 0%, #1a2a4b 100%); border-radius: 12px; padding: 1.5rem 1rem; margin-bottom: 2rem; }
+.progress-wrap { margin-bottom: 1.25rem; }
+.progress-info { display: flex; justify-content: space-between; font-size: .82rem; color: #ccc; margin-bottom: .4rem; }
+.progress-bar-track { background: rgba(255,255,255,.15); border-radius: 99px; height: 8px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, #01b319, #04d620); border-radius: 99px; transition: width .4s ease; width: 0%; }
+.quiz-step { display: none; animation: fadeIn .3s ease; }
+.quiz-step.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.welcome-icon { width: 70px; height: 70px; background: linear-gradient(135deg, #01b319, #04960d); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.8rem; color: #fff; box-shadow: 0 4px 16px rgba(1,179,25,.4); }
+.quiz-h1 { font-family: var(--font-head); font-size: 1.3rem; color: #fff; text-align: center; margin-bottom: .75rem; line-height: 1.3; }
+.quiz-h1 .highlight { color: #4ade80; }
+.quiz-sub { text-align: center; color: #bbb; font-size: .92rem; max-width: 480px; margin: 0 auto 1.25rem; line-height: 1.6; }
+.q-label { display: flex; align-items: center; gap: .5rem; color: #4ade80; font-weight: 700; font-size: 1rem; margin-bottom: .3rem; }
+.q-sub { color: #aaa; font-size: .85rem; margin-bottom: 1rem; }
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin-bottom: 1rem; }
+.option-card { background: rgba(255,255,255,.07); border: 2px solid rgba(255,255,255,.15); border-radius: 10px; padding: .9rem .75rem; cursor: pointer; text-align: center; transition: all .2s; color: #fff; }
+.option-card:hover { border-color: #4ade80; background: rgba(74,222,128,.1); }
+.option-card.selected { border-color: #01b319; background: rgba(1,179,25,.2); }
+.opt-text { font-weight: 700; font-size: .95rem; }
+.opt-sub { font-size: .75rem; color: #aaa; margin-top: .2rem; }
+.body-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-bottom: 1rem; }
+.body-card { background: rgba(255,255,255,.07); border: 2px solid rgba(255,255,255,.15); border-radius: 8px; padding: .65rem .5rem; cursor: pointer; text-align: center; font-weight: 600; color: #fff; font-size: .88rem; transition: all .2s; }
+.body-card:hover { border-color: #4ade80; }
+.body-card.selected { border-color: #01b319; background: rgba(1,179,25,.2); color: #4ade80; }
+.btn-quiz { display: block; width: 100%; background: linear-gradient(180deg, #01b319 0%, #04960d 100%); color: #fff; border: none; border-radius: 8px; padding: .9rem 1rem; font-size: 1.05rem; font-weight: 700; font-family: var(--font-body); cursor: pointer; transition: all .2s; box-shadow: 0 4px 16px rgba(1,179,25,.35); text-align: center; }
+.btn-quiz:hover { background: linear-gradient(180deg, #02c91e 0%, #06b310 100%); transform: translateY(-2px); }
+.loading-screen { text-align: center; padding: 1rem 0; }
+.spinner-box { position: relative; width: 80px; height: 80px; margin: 1.25rem auto; }
+.spinner { width: 80px; height: 80px; border: 4px solid rgba(255,255,255,.15); border-top: 4px solid #01b319; border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #4ade80; font-size: 1.4rem; }
+.loading-feats { display: flex; flex-direction: column; gap: .4rem; margin: 1rem 0; }
+.loading-feat { display: flex; align-items: center; gap: .5rem; color: #bbb; font-size: .88rem; }
+.loading-feat i { color: #01b319; }
+.countdown-num { font-size: 3rem; font-weight: 900; color: #4ade80; margin: .5rem 0 .25rem; font-family: var(--font-head); }
+.countdown-label { color: #aaa; font-size: .85rem; }
+.results-screen { text-align: center; }
+.trophy-icon { width: 70px; height: 70px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.8rem; color: #fff; box-shadow: 0 4px 16px rgba(251,191,36,.4); }
+.results-card { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.15); border-radius: 10px; padding: 1.25rem; margin: 1rem 0; text-align: left; }
+.results-card-title { font-weight: 700; color: #4ade80; font-size: .9rem; margin-bottom: .75rem; display: flex; align-items: center; gap: .4rem; }
+.benefits-list li { display: flex; align-items: flex-start; gap: .5rem; color: #ddd; font-size: .9rem; margin-bottom: .5rem; }
+.benefits-list li i { color: #01b319; margin-top: 3px; flex-shrink: 0; }
+.discount-box { background: linear-gradient(135deg, rgba(1,179,25,.15), rgba(1,179,25,.08)); border: 2px solid #01b319; border-radius: 10px; padding: 1.25rem; margin: 1rem 0; cursor: pointer; transition: all .2s; }
+.discount-box:hover { border-color: #4ade80; transform: translateY(-2px); }
+.discount-label { color: #4ade80; font-weight: 700; font-size: .88rem; margin-bottom: .4rem; display: flex; align-items: center; gap: .4rem; }
+.discount-highlight { color: #fff; font-size: 1.2rem; font-weight: 900; font-family: var(--font-head); line-height: 1.2; }
+.discount-desc { color: #bbb; font-size: .88rem; margin-top: .6rem; line-height: 1.5; }
 
-  /* PITCH */
-  .pitch{background:#f9f9f9;padding:3rem 1rem;border-bottom:1px solid var(--border)}
-  .pitch__title{text-align:center;font-size:1.75rem;font-weight:900;text-transform:uppercase;letter-spacing:-.5px;margin-bottom:.5rem}
-  .pitch__sub{text-align:center;color:var(--gray);font-weight:500;margin-bottom:2rem}
-  .cards{display:grid;grid-template-columns:1fr;gap:1.5rem;max-width:1000px;margin:0 auto}
-  @media(min-width:768px){.cards{grid-template-columns:repeat(3,1fr)}}
+/* PRODUCTS — oculto via CSS; JS revela apos o quiz */
+#products-section { display: none; padding: 1.5rem 0 2rem; }
+.products-title { text-align: center; font-family: var(--font-head); font-size: 1.4rem; font-weight: 900; color: var(--red); text-transform: uppercase; position: relative; padding-bottom: .75rem; margin-bottom: 0; }
+.products-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 3px; background: var(--red); border-radius: 2px; }
+.products-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin-top: 1.75rem; }
+@media (min-width: 768px) { .products-grid { grid-template-columns: repeat(3, 1fr); } .products-title { font-size: 1.8rem; } }
+.prod-card { background: var(--white); border: 2px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; transition: all .25s; text-decoration: none; color: var(--text); box-shadow: 0 4px 12px rgba(0,0,0,.07); }
+.prod-card:hover { transform: translateY(-5px); box-shadow: 0 10px 28px rgba(204,0,0,.15); border-color: var(--red); }
+.prod-card.featured { border-color: var(--red); box-shadow: 0 6px 20px rgba(204,0,0,.18); }
+.prod-badge { background: var(--red); color: #fff; text-align: center; font-weight: 700; font-size: .82rem; padding: .45rem; letter-spacing: .5px; }
+.prod-body { padding: 1rem; display: flex; flex-direction: column; flex: 1; }
+.prod-img-wrap { text-align: center; margin: .5rem 0 .75rem; }
+.prod-img-wrap img { max-height: 160px; width: auto; margin: 0 auto; }
+.prod-supply { font-weight: 900; font-size: 1rem; text-align: center; margin-bottom: .2rem; }
+.prod-rec { font-size: .78rem; color: var(--muted); text-align: center; margin-bottom: .75rem; min-height: 1.2em; }
+.prod-price-row { border-top: 1px dashed var(--border); border-bottom: 1px dashed var(--border); padding: .75rem 0; text-align: center; margin-bottom: .75rem; }
+.prod-price { font-size: 2.4rem; font-weight: 900; color: var(--text); line-height: 1; }
+.prod-price sup { font-size: 1rem; vertical-align: super; }
+.prod-price-per { font-size: .8rem; color: var(--muted); margin-top: .2rem; }
+.prod-total { color: var(--muted); font-size: .88rem; margin-top: .25rem; }
+.prod-total s { color: #aaa; }
+.prod-savings { color: var(--red); font-weight: 700; font-size: .88rem; margin-top: .2rem; }
+.prod-ship { color: var(--green); font-weight: 600; font-size: .82rem; }
+.prod-features { margin-bottom: .75rem; }
+.prod-features li { display: flex; align-items: center; gap: .4rem; font-size: .85rem; padding: .25rem 0; border-bottom: 1px solid rgba(0,0,0,.05); }
+.prod-features li:last-child { border-bottom: none; }
+.prod-features li .ck { color: var(--green); font-size: .8rem; flex-shrink: 0; }
+.prod-buy { display: block; background: linear-gradient(180deg, #01b319 0%, #04960d 100%); color: #fff; text-align: center; padding: .85rem; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all .2s; margin-top: auto; box-shadow: 0 4px 12px rgba(1,179,25,.3); animation: pulseBuy 2s infinite; }
+.prod-buy:hover { background: linear-gradient(180deg, #02d01f 0%, #05b010 100%); transform: translateY(-2px); animation: none; }
+.prod-buy.no-pulse { animation: none; }
+@keyframes pulseBuy { 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
+.prod-cards-img { display: flex; justify-content: center; margin-top: .5rem; }
+.prod-cards-img img { height: 20px; object-fit: contain; }
 
-  .card{background:#fff;border:2px solid var(--border);border-radius:8px;padding:2rem 1.5rem;text-align:center;position:relative;display:flex;flex-direction:column}
-  .card--best{border:3px solid var(--red);box-shadow:0 10px 25px -5px rgba(253,76,49,.2)}
-  .card__badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:4px 16px;border-radius:20px;font-size:.8rem;font-weight:700;white-space:nowrap;text-transform:uppercase;letter-spacing:.5px}
-  .card__badge--best{background:#facc15;color:#1e293b}
-  .card__name{font-size:1.75rem;font-weight:900;color:var(--dark);margin:.5rem 0 .25rem;letter-spacing:-.5px}
-  .card__days{font-size:.9rem;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:1.25rem}
-  .card img{max-width:100%;height:160px;object-fit:contain;margin:0 auto 1.25rem}
-  .card__was{color:#94a3b8;text-decoration:line-through;font-size:1rem;font-weight:600;margin-bottom:-4px}
-  .price-wrap{display:flex;align-items:flex-start;justify-content:center;line-height:1;color:var(--dark)}
-  .card--best .price-wrap{color:var(--red)}
-  .price-curr{font-size:1.4rem;font-weight:700;margin-top:.4rem}
-  .price-num{font-size:4rem;font-weight:900;letter-spacing:-2px}
-  .card__ship{display:inline-block;margin-top:.4rem;background:#dcfce7;color:#166534;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:4px}
-  .card__ship--paid{background:#f1f5f9;color:var(--gray)}
-  .card__list{list-style:none;text-align:left;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:.75rem 0;margin:1.25rem 0;font-size:.875rem;color:#475569;font-weight:600;display:flex;flex-direction:column;gap:.4rem}
-  .card__list li{display:flex;align-items:center;gap:.5rem}
-  .card__list .fa-circle-check,.card__list .fa-check{color:#16a34a}
-  .card__list .fa-star{color:#f59e0b}
-  .card__list .best-li{color:var(--dark);font-weight:800}
-  .card__list .gift-li{color:#60a5fa}
-  .card__list .fa-gift{color:#60a5fa}
-  .btn-buy{display:flex;align-items:center;justify-content:center;gap:.5rem;background:var(--green);color:#fff;text-decoration:none;padding:1rem;border-radius:6px;font-size:1.1rem;font-weight:900;text-transform:uppercase;transition:all .2s;box-shadow:0 4px 6px -1px rgba(0,168,21,.2);margin-top:auto}
-  .btn-buy:hover{background:var(--green-dark);transform:translateY(-2px);box-shadow:0 10px 15px -3px rgba(0,168,21,.3)}
-  .card__guarantee{font-size:.75rem;color:var(--gray);font-weight:700;margin-top:.75rem;display:flex;align-items:center;justify-content:center;gap:4px}
-  .card__total{font-size:.85rem;color:#475569;margin-top:.75rem}
+/* GUARANTEE */
+.guarantee-section { background: var(--bg); padding: 2.5rem 1rem; margin-top: 1.5rem; }
+.guarantee-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+.guarantee-h2 { font-family: var(--font-head); font-size: 1.5rem; font-weight: 900; color: #1a2a4b; margin-bottom: 1.25rem; line-height: 1.3; }
+.guarantee-h2 em { color: var(--red); font-style: normal; }
+.guarantee-body { display: flex; align-items: center; gap: 1.5rem; text-align: left; flex-direction: column; }
+@media (min-width: 576px) { .guarantee-body { flex-direction: row; } }
+.guarantee-badge-img { width: 130px; flex-shrink: 0; }
+.guarantee-badge-img img { width: 100%; }
+.guarantee-text { font-size: .95rem; line-height: 1.7; color: #444; }
+.trust-badges { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
+.trust-badges img { height: 50px; object-fit: contain; }
 
-  /* COMMENTS */
-  .comments{background:#fff;padding:2.5rem 1rem;max-width:960px;margin:0 auto}
-  .comments__header{display:flex;align-items:center;gap:.5rem;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
-  .comments__count{font-weight:700;font-size:1.1rem}
-  .comments__sort{margin-left:auto;font-size:.875rem;color:var(--gray)}
-  .comments__sort span{color:#1877f2;font-weight:600;cursor:pointer}
-  .comments__sort span:hover{text-decoration:underline}
-  .thread{display:flex;flex-direction:column;gap:1.25rem}
-  .comment{display:flex;gap:.5rem}
-  .comment--reply{margin-left:2.75rem;margin-top:.75rem}
-  .avatar{width:36px;height:36px;border-radius:50%;flex-shrink:0;cursor:pointer;background:var(--border);overflow:hidden}
-  .avatar--sm{width:32px;height:32px}
-  .avatar svg{width:100%;height:100%}
-  .bubble{background:#f0f2f5;border-radius:18px;padding:8px 12px;position:relative;width:fit-content;max-width:90%}
-  .bubble__author{font-weight:700;font-size:.8rem;color:#050505;margin-bottom:2px;cursor:pointer}
-  .bubble__author:hover{text-decoration:underline}
-  .bubble__text{font-size:.9375rem;color:#050505;line-height:1.35}
-  .bubble__likes{position:absolute;bottom:-8px;right:-10px;display:flex;align-items:center;gap:3px;background:#fff;padding:2px 5px;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
-  .bubble__likes-icon{width:14px;height:14px;background:#1877f2;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path d='M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2H464c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48H294.5c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.1 160 358.3V320 272 247.1c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192H96c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V224c0-17.7 14.3-32 32-32z'/></svg>") no-repeat center/contain;-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path d='M313.4 32.9c26 5.2 42.9 30.5 37.7 56.5l-2.3 11.4c-5.3 26.7-15.1 52.1-28.8 75.2H464c26.5 0 48 21.5 48 48c0 18.5-10.5 34.6-25.9 42.6C497 275.4 504 288.9 504 304c0 23.4-16.8 42.9-38.9 47.1c4.4 7.3 6.9 15.8 6.9 24.9c0 21.3-13.9 39.4-33.1 45.6c.7 3.3 1.1 6.8 1.1 10.4c0 26.5-21.5 48-48 48H294.5c-19 0-37.5-5.6-53.3-16.1l-38.5-25.7C176 420.4 160 390.1 160 358.3V320 272 247.1c0-29.2 13.3-56.7 36-75l7.4-5.9c26.5-21.2 44.6-51 51.2-84.2l2.3-11.4c5.2-26 30.5-42.9 56.5-37.7zM32 192H96c17.7 0 32 14.3 32 32V448c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V224c0-17.7 14.3-32 32-32z'/></svg>") no-repeat center/contain}
-  .bubble__likes-count{font-size:.7rem;color:#65676b}
-  .comment__actions{display:flex;align-items:center;gap:.75rem;margin-top:4px;padding-left:12px;font-size:.75rem;color:#65676b;font-weight:600}
-  .comment__actions button{background:none;border:none;cursor:pointer;font-size:.75rem;color:#65676b;font-weight:600}
-  .comment__actions button:hover{text-decoration:underline}
-  .comment__time{font-weight:400}
-  .comments__closed{padding:1.5rem 0 0;margin-top:.5rem;border-top:1px solid var(--border);text-align:center}
-  .comments__closed p{font-size:.8rem;color:#6b7280;font-weight:600;background:#f9fafb;display:inline-block;padding:4px 12px;border-radius:20px}
+/* COMMENTS */
+.comments-section { padding: 1rem 0 2rem; }
+.comments-heading { font-family: var(--font-head); font-size: 1.1rem; color: #333; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: .4rem; }
+.fb-icon { color: #1877f2; font-size: 1.2rem; }
+.comments-container { border: 1px solid #dddfe2; border-radius: 12px; padding: 1.25rem 1.25rem 0; display: flex; flex-direction: column; gap: 1.1rem; background: #fff; }
+.comment { display: flex; align-items: flex-start; gap: .6rem; position: relative; }
+.comment.reply { margin-left: 3.2rem; margin-bottom: .5rem; }
+.comment.reply + .reply { margin-top: -.6rem; }
+.comment .avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: #e4e6ea; }
+.comment-body { flex: 1; }
+.comment-bubble { background: #f0f2f5; border-radius: 10px; padding: .45rem .75rem .65rem; }
+.comment-name { font-weight: 700; font-size: .9rem; color: var(--fb-blue); margin-bottom: .1rem; cursor: pointer; }
+.comment-name:hover { text-decoration: underline; }
+.comment-text { font-size: .92rem; color: #050505; line-height: 1.45; }
+.comment-text .mention { color: var(--fb-blue); }
+.comment-actions { display: flex; align-items: center; gap: .25rem; margin: .25rem 0 0 .5rem; font-size: .77rem; color: #888; }
+.act-like { font-weight: 700; cursor: pointer; transition: color .15s; }
+.act-like:hover { color: var(--fb-blue); }
+.act-like.liked { color: var(--fb-blue); }
+.act-reply { font-weight: 700; }
+.likes-pill { position: absolute; right: 0; bottom: 0; background: #fff; border: 1.5px solid #e4e6ea; border-radius: 99px; padding: 1px 6px 1px 3px; font-size: .78rem; color: #888; display: flex; align-items: center; gap: 2px; }
+.likes-pill::before { content: '👍'; font-size: .7rem; }
+.comments-closed { text-align: center; font-size: .82rem; font-weight: 700; color: #888; padding: .9rem 0 .75rem; }
 
-  /* FOOTER */
-  .site-footer{background:#111827;padding:2.5rem 1rem;text-align:center}
-  .site-footer__disclaimer{color:#6b7280;font-size:.7rem;margin-bottom:1.25rem;line-height:1.6;max-width:800px;margin-left:auto;margin-right:auto}
-  .site-footer__links{display:flex;flex-wrap:wrap;justify-content:center;gap:.75rem 1.5rem;font-size:.8rem;margin-bottom:1.25rem}
-  .site-footer__links a{color:#9ca3af;font-weight:700;text-decoration:none;transition:color .2s}
-  .site-footer__links a:hover{color:#fff;text-decoration:underline}
-  .site-footer__copy{font-size:.7rem;color:#4b5563;font-weight:500;text-transform:uppercase;letter-spacing:.1em}
-
-  /* HIDDEN (revealed by vturb) */
-  .esconder{display:none}
+/* FOOTER */
+.footer-tags { background: var(--bg); padding: 1rem; text-align: center; border-top: 1px solid var(--border); font-size: .8rem; color: var(--muted); display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem .75rem; }
+.footer-tags a { color: var(--muted); }
+.footer-tags a:hover { color: var(--red); }
 </style>
 </head>
 <body>
 
-<!-- HopLink UTM -->
+  <!-- HopLink UTM -->
 <script>
 (function(){
   function p(n){try{return new URL(location.href).searchParams.get(n)||""}catch(e){return""}}
@@ -167,457 +253,620 @@
 })();
 </script>
 
-<!-- Referrer no-referrer meta -->
-<script>
-document.addEventListener('DOMContentLoaded',function(){
-  var m=document.createElement('meta');m.name='referrer';m.content='no-referrer';
-  document.head.appendChild(m);
-});
-</script>
-
-<header class="site-header">
-  <div class="site-header__inner">
-    <button aria-label="Menu">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-    </button>
-    <h1 class="site-logo">Health<span>News</span></h1>
-    <button aria-label="Search">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-    </button>
+<!-- HEADER -->
+<header class="main-header">
+  <div class="container">
+    <div class="header-inner">
+      <div class="header-left">
+        <button id="menuBtn" aria-label="Menu"><i class="fas fa-bars"></i></button>
+        <a href="#" class="logo">
+          <span class="logo-cnn">CNN</span>
+          <span class="logo-health">Health</span>
+        </a>
+      </div>
+      <nav class="main-nav">
+        <a href="#">Wellness</a>
+        <a href="#">Food</a>
+        <a href="#">Fitness</a>
+        <a href="#">Medical News</a>
+      </nav>
+      <div class="header-right">
+        <a href="#" class="hd-link"><i class="far fa-clock"></i> Watch</a>
+        <a href="#" class="hd-link"><i class="fas fa-headphones"></i> Listen</a>
+        <a href="#" class="hd-link live-tv"><i class="fas fa-tv"></i> Live TV</a>
+        <button class="search-btn" aria-label="Search"><i class="fas fa-search"></i></button>
+        <button class="sign-btn">Sign In</button>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#">Wellness</a>
+    <a href="#">Food</a>
+    <a href="#">Fitness</a>
+    <a href="#">Medical News</a>
+    <a href="#">Watch</a>
+    <a href="#">Listen</a>
+    <a href="#" style="color:var(--red)">Live TV</a>
   </div>
 </header>
 
-<div class="ticker" aria-hidden="true">
-  <div class="ticker__track">
-    <span>LIVE UPDATES • BREAKING NEWS • LIVE UPDATES • BREAKING NEWS • LIVE UPDATES • BREAKING NEWS • LIVE UPDATES • BREAKING NEWS • </span>
-    <span>LIVE UPDATES • BREAKING NEWS • LIVE UPDATES • BREAKING NEWS • LIVE UPDATES • BREAKING NEWS • LIVE UPDATES • BREAKING NEWS • </span>
-  </div>
+<main>
+
+  <!-- HERO + VIDEO -->
+  <section class="hero">
+    <div class="container">
+      <div class="breaking-badge">&#9679; Breaking Health News</div>
+      <h1>Jillian Michaels Reveals the Gelatin Recipe to Lose 15 Pounds Before <span id="dynamic-month">March</span> Ends</h1>
+      <div class="article-meta">
+        <span class="author">By CNN Health Staff</span>
+        <span>•</span>
+        <span>Updated <span id="dynamic-date">March 2025</span></span>
+        <span>•</span>
+        <span>6 min read</span>
+      </div>
+
+      <div class="video-wrap">
+        <div class="video-topbar">
+          <div class="video-topbar-left">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            CNN Health Exclusive Report
+          </div>
+          <span class="watch-badge">WATCH NOW</span>
+        </div>
+        <div class="video-body">
+          <vturb-smartplayer id="vid-69bc95e8d54d8d20f10299e7" style="display: block; margin: 0 auto; width: 100%; "></vturb-smartplayer> 
+        </div>
+        <div class="video-footer">
+          <div class="live-ind"><span class="live-dot"></span> LIVE</div>
+          <span class="rec-warn">Recording in progress — do not share</span>
+        </div>
+      </div>
+
+      <div class="tags-section">
+        <p class="tags-label"><i class="fas fa-bell" style="color:var(--red)"></i> Stay updated with CNN's investigative reporting</p>
+        <div class="tags-list">
+          <span class="tag">#NaturalRemedies</span>
+          <span class="tag">#HealthBreakthrough</span>
+          <span class="tag">#CNNExclusive</span>
+          <span class="tag">#WeightLoss</span>
+          <span class="tag">#DrOz</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+
+    <!-- ============================================================
+         QUIZ — .esconder: VTurb exibe no delaySeconds definido
+         ============================================================ -->
+    <div class="quiz-outer esconder" id="quiz-outer">
+
+      <div class="progress-wrap" id="progressWrap" style="display:none;">
+        <div class="progress-info">
+          <div><i class="fas fa-star" style="color:#fbbf24;margin-right:4px"></i> Step <span id="progCurrent">1</span> of <span id="progTotal">6</span></div>
+          <div><span id="progPct">0</span>%</div>
+        </div>
+        <div class="progress-bar-track"><div class="progress-bar-fill" id="progressFill"></div></div>
+      </div>
+
+      <!-- Step 0: Boas-vindas -->
+      <div class="quiz-step active" id="qstep0">
+        <div class="welcome-icon"><i class="fas fa-brain"></i></div>
+        <h2 class="quiz-h1">Find Your Ideal <span class="highlight">Jelly Lean</span> Formula</h2>
+        <p class="quiz-sub">Answer a few quick questions to get a powerful, customized solution — aligned with your body and goals.</p>
+        <button class="btn-quiz" onclick="goStep(1)">Let's Start! <i class="fas fa-arrow-right" style="margin-left:.4rem"></i></button>
+      </div>
+
+      <!-- Step 1: Idade -->
+      <div class="quiz-step" id="qstep1">
+        <div class="q-label"><i class="fas fa-calendar-alt"></i> What's your age range?</div>
+        <div class="q-sub">This helps us optimize your formula</div>
+        <div class="options-grid">
+          <div class="option-card" onclick="pickOption(this,1,2)"><div class="opt-text">18–29 years</div><div class="opt-sub">Young Adult</div></div>
+          <div class="option-card" onclick="pickOption(this,1,2)"><div class="opt-text">30–44 years</div><div class="opt-sub">Prime Years</div></div>
+          <div class="option-card" onclick="pickOption(this,1,2)"><div class="opt-text">45–59 years</div><div class="opt-sub">Experienced</div></div>
+          <div class="option-card" onclick="pickOption(this,1,2)"><div class="opt-text">60+ years</div><div class="opt-sub">Golden Years</div></div>
+        </div>
+      </div>
+
+      <!-- Step 2: Peso -->
+      <div class="quiz-step" id="qstep2">
+        <div class="q-label"><i class="fas fa-weight"></i> What's your current weight range?</div>
+        <div class="q-sub">Select the range that fits you best</div>
+        <div class="options-grid">
+          <div class="option-card" onclick="pickOption(this,2,3)"><div class="opt-text">100–150 lbs</div><div class="opt-sub">Light Weight</div></div>
+          <div class="option-card" onclick="pickOption(this,2,3)"><div class="opt-text">151–200 lbs</div><div class="opt-sub">Moderate Weight</div></div>
+          <div class="option-card" onclick="pickOption(this,2,3)"><div class="opt-text">201–250 lbs</div><div class="opt-sub">Heavy Weight</div></div>
+          <div class="option-card" onclick="pickOption(this,2,3)"><div class="opt-text">250+ lbs</div><div class="opt-sub">Extra Heavy</div></div>
+        </div>
+      </div>
+
+      <!-- Step 3: Altura -->
+      <div class="quiz-step" id="qstep3">
+        <div class="q-label"><i class="fas fa-ruler-vertical"></i> What's your height range?</div>
+        <div class="q-sub">This helps calculate your ideal dosage</div>
+        <div class="options-grid">
+          <div class="option-card" onclick="pickOption(this,3,4)"><div class="opt-text">Under 5'4"</div><div class="opt-sub">Shorter Height</div></div>
+          <div class="option-card" onclick="pickOption(this,3,4)"><div class="opt-text">5'4" – 5'8"</div><div class="opt-sub">Average Height</div></div>
+          <div class="option-card" onclick="pickOption(this,3,4)"><div class="opt-text">5'9" – 6'1"</div><div class="opt-sub">Tall Height</div></div>
+          <div class="option-card" onclick="pickOption(this,3,4)"><div class="opt-text">Over 6'1"</div><div class="opt-sub">Very Tall</div></div>
+        </div>
+      </div>
+
+      <!-- Step 4: Meta -->
+      <div class="quiz-step" id="qstep4">
+        <div class="q-label"><i class="fas fa-bullseye"></i> How much weight do you want to lose?</div>
+        <div class="q-sub">Choose your target goal</div>
+        <div class="options-grid">
+          <div class="option-card" onclick="pickOption(this,4,5)"><div class="opt-text">5–15 lbs</div><div class="opt-sub">Light Trim</div></div>
+          <div class="option-card" onclick="pickOption(this,4,5)"><div class="opt-text">16–30 lbs</div><div class="opt-sub">Moderate Loss</div></div>
+          <div class="option-card" onclick="pickOption(this,4,5)"><div class="opt-text">31–50 lbs</div><div class="opt-sub">Major Loss</div></div>
+          <div class="option-card" onclick="pickOption(this,4,5)"><div class="opt-text">50+ lbs</div><div class="opt-sub">Full Transform</div></div>
+        </div>
+      </div>
+
+      <!-- Step 5: Areas -->
+      <div class="quiz-step" id="qstep5">
+        <div class="q-label"><i class="fas fa-crosshairs"></i> Which areas do you want to target?</div>
+        <div class="q-sub">Select all that apply</div>
+        <div class="body-grid">
+          <div class="body-card" onclick="toggleBody(this)">Arms</div>
+          <div class="body-card" onclick="toggleBody(this)">Belly</div>
+          <div class="body-card" onclick="toggleBody(this)">Thighs</div>
+          <div class="body-card" onclick="toggleBody(this)">Hips</div>
+          <div class="body-card" onclick="toggleBody(this)">Chest</div>
+          <div class="body-card" onclick="toggleBody(this)">Overall Body</div>
+        </div>
+        <button class="btn-quiz" id="btnCalc" onclick="goStep(6)" style="opacity:.4;pointer-events:none;">
+          Calculate My Formula <i class="fas fa-calculator" style="margin-left:.4rem"></i>
+        </button>
+      </div>
+
+      <!-- Step 6: Loading -->
+      <div class="quiz-step" id="qstep6">
+        <div class="loading-screen">
+          <h2 class="quiz-h1">Calculating Your Perfect Formula...</h2>
+          <div class="spinner-box">
+            <div class="spinner"></div>
+            <div class="spinner-icon"><i class="fas fa-flask"></i></div>
+          </div>
+          <p class="quiz-sub">Please wait while we match the ideal nutrient ratio for your unique body.</p>
+          <div class="loading-feats">
+            <div class="loading-feat"><i class="fas fa-check-circle"></i> Analyzing your profile</div>
+            <div class="loading-feat"><i class="fas fa-check-circle"></i> Optimizing dosage</div>
+            <div class="loading-feat"><i class="fas fa-check-circle"></i> Matching ingredients</div>
+            <div class="loading-feat"><i class="fas fa-check-circle"></i> Finalizing formula</div>
+          </div>
+          <div class="countdown-num" id="cdNum">6</div>
+          <div class="countdown-label">seconds remaining...</div>
+        </div>
+      </div>
+
+      <!-- Step 7: Resultado -->
+      <div class="quiz-step" id="qstep7">
+        <div class="results-screen">
+          <div class="trophy-icon"><i class="fas fa-trophy"></i></div>
+          <h2 class="quiz-h1">Congratulations!</h2>
+          <p class="quiz-sub">Your personalized <span class="highlight">Jelly Lean formula</span> is ready — crafted to help you reach your goals faster than ever!</p>
+          <div class="results-card">
+            <div class="results-card-title"><i class="fas fa-certificate"></i> YOUR CUSTOM FORMULA INCLUDES:</div>
+            <ul class="benefits-list">
+              <li><i class="fas fa-check-circle"></i><span>Customized nutrient ratio for YOUR unique body</span></li>
+              <li><i class="fas fa-check-circle"></i><span>Targets your specific problem areas</span></li>
+              <li><i class="fas fa-check-circle"></i><span>Accelerates metabolism naturally</span></li>
+              <li><i class="fas fa-check-circle"></i><span>No rebound effect – guaranteed lasting results</span></li>
+              <li><i class="fas fa-check-circle"></i><span>Works from Day One</span></li>
+            </ul>
+          </div>
+          <div class="discount-box" onclick="showProducts()">
+            <div class="discount-label"><i class="fas fa-gift"></i> SPECIAL OFFER UNLOCKED!</div>
+            <div class="discount-highlight">6-BOTTLE PROGRAM<br>MEGA EXCLUSIVE DISCOUNT</div>
+            <div class="discount-desc">This extended treatment defeats the hidden root cause of slow metabolism and stubborn fat, delivering lasting results without rebound.</div>
+          </div>
+          <button class="btn-quiz" onclick="showProducts()">
+            <i class="fas fa-rocket" style="margin-right:.4rem"></i> Ready to Start? View Your Options!
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /quiz-outer -->
+
+    <!-- ============================================================
+         PRODUTOS — oculto no CSS; JS exibe após o quiz concluir
+         ============================================================ -->
+    <section id="products-section">
+
+      <h2 class="products-title">Choose Your Package</h2>
+      <div class="products-grid">
+
+        <!-- 6 Bottles -->
+        <a href="https://jellylean.pay.clickbank.net/?cbitems=JLLN06FE&cbfid=62643&template=jellylean6&campaignkey=pg-cyb--kit-kit3--funnelid-dtcfunnel&affiliate=gdctrlc" class="prod-card featured smartplayer-click-event">
+          <div class="prod-badge">&#11088; BEST VALUE!</div>
+          <div class="prod-body">
+            <div class="prod-img-wrap"><img src="images/jellylean-6.webp" alt="6 Bottles Jelly Lean"></div>
+            <div class="prod-supply">6 BOTTLES</div>
+            <div class="prod-rec">Our Recommended Option</div>
+            <div class="prod-price-row">
+              <div class="prod-price"><sup>$</sup>49</div>
+              <div class="prod-price-per">per bottle</div>
+              <div class="prod-total">Total: <s>$894</s> <b>$294</b></div>
+              <div class="prod-savings">YOU SAVE $600!</div>
+              <div class="prod-ship">+ FREE SHIPPING</div>
+            </div>
+            <ul class="prod-features">
+              <li><i class="fas fa-check ck"></i> Biggest Discount Available</li>
+              <li><i class="fas fa-check ck"></i> 60-Day Money Back Guarantee</li>
+              <li><i class="fas fa-check ck"></i> 3 FREE eBooks Included!</li>
+            </ul>
+            <div class="prod-buy">Add to Cart &#128072;</div>
+            <div class="prod-cards-img"><img src="images/card.png" alt="Payment Methods"></div>
+          </div>
+        </a>
+
+        <!-- 2+1 Bottles -->
+        <a href="https://jellylean.pay.clickbank.net/?cbitems=JLLN03FE&cbfid=62643&template=jellylean3&campaignkey=pg-cyb--kit-kit2--funnelid-dtcfunnel&affiliate=gdctrlc" class="prod-card smartplayer-click-event">
+          <div class="prod-badge" style="background:#555;">Most Popular</div>
+          <div class="prod-body">
+            <div class="prod-img-wrap"><img src="images/jellylean-3.webp" alt="2+1 Bottles Jelly Lean"></div>
+            <div class="prod-supply">3 BOTTLES</div>
+            <div class="prod-rec">&nbsp;</div>
+            <div class="prod-price-row">
+              <div class="prod-price"><sup>$</sup>69</div>
+              <div class="prod-price-per">per bottle</div>
+              <div class="prod-total">Total: <s>$447</s> <b>$207</b></div>
+              <div class="prod-savings">YOU SAVE $240!</div>
+              <div class="prod-ship">+ FREE SHIPPING</div>
+            </div>
+            <ul class="prod-features">
+              <li><i class="fas fa-check ck"></i> Popular Choice</li>
+              <li><i class="fas fa-check ck"></i> 60-Day Money Back Guarantee</li>
+            </ul>
+            <div class="prod-buy no-pulse">Add to Cart</div>
+            <div class="prod-cards-img"><img src="images/card.png" alt="Payment Methods"></div>
+          </div>
+        </a>
+
+        <!-- 2 Bottles -->
+        <a href="https://jellylean.pay.clickbank.net/?cbitems=JLLN02FE&cbfid=62643&template=jellylean2&campaignkey=pg-cyb--kit-kit1--funnelid-dtcfunnel&affiliate=gdctrlc" class="prod-card smartplayer-click-event">
+          <div class="prod-badge" style="background:#777;">Basic</div>
+          <div class="prod-body">
+            <div class="prod-img-wrap"><img src="images/jellylean-2.webp" alt="2 Bottles Jelly Lean"></div>
+            <div class="prod-supply">2 BOTTLES</div>
+            <div class="prod-rec">&nbsp;</div>
+            <div class="prod-price-row">
+              <div class="prod-price"><sup>$</sup>79</div>
+              <div class="prod-price-per">per bottle</div>
+              <div class="prod-total">Total: <s>$298</s> <b>$158</b></div>
+              <div class="prod-savings">YOU SAVE $140!</div>
+              <div class="prod-ship">+ SHIPPING</div>
+            </div>
+            <ul class="prod-features">
+              <li><i class="fas fa-check ck"></i> Starter Package</li>
+              <li><i class="fas fa-check ck"></i> 60-Day Money Back Guarantee</li>
+            </ul>
+            <div class="prod-buy no-pulse">Add to Cart</div>
+            <div class="prod-cards-img"><img src="images/card.png" alt="Payment Methods"></div>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- Garantia -->
+      <div class="guarantee-section">
+        <div class="guarantee-inner">
+          <h2 class="guarantee-h2">100% Satisfaction or Your Money Back<br><em>60-Day Unconditional Guarantee</em></h2>
+          <div class="guarantee-body">
+            <div class="guarantee-badge-img"><img src="images/guarantee-badge.webp" alt="Guarantee"></div>
+            <p class="guarantee-text">Rest assured with our 60-day money-back guarantee. If Jelly Lean doesn't meet your expectations, simply reach out within 60 days of purchase for a full refund. Your satisfaction is our absolute priority.</p>
+          </div>
+          <div class="trust-badges">
+            <img src="images/gmp.png" alt="GMP Certified">
+            <img src="images/nat.png" alt="Natural Ingredients">
+            <img src="images/foreign.png" alt="Foreign Production">
+            <img src="images/gmo.png" alt="Non-GMO">
+          </div>
+        </div>
+      </div>
+
+    </section><!-- /products-section -->
+
+    <!-- COMMENTS -->
+    <section class="comments-section">
+      <div class="comments-heading"><i class="fab fa-facebook fb-icon"></i> Comments</div>
+      <div class="comments-container">
+
+        <div class="comment">
+          <img class="avatar" src="images/user1.webp" alt="Sarah Smith">
+          <div class="comment-body">
+            <div class="comment-bubble">
+              <div class="comment-name">Sarah Smith</div>
+              <p class="comment-text">OMG! My doctor couldn't believe it. I lost so much belly fat with this gelatin trick that he thought I was starving myself. But my tests show I'm healthier than ever!</p>
+            </div>
+            <div class="comment-actions"><span class="act-like" onclick="likeThis(this)">Like</span><span>·</span><span class="act-reply">Reply</span><span>·</span><span>2h</span></div>
+          </div>
+          <div class="likes-pill">23</div>
+        </div>
+
+        <div class="comment reply">
+          <img class="avatar" src="images/user1-1.webp" alt="Jennifer Taylor">
+          <div class="comment-body">
+            <div class="comment-bubble">
+              <div class="comment-name">Jennifer Taylor</div>
+              <p class="comment-text"><span class="mention">Sarah Smith</span> Girl, I melted 11 pounds in just a week! This gelatin trick is unreal!</p>
+            </div>
+            <div class="comment-actions"><span class="act-like" onclick="likeThis(this)">Like</span><span>·</span><span class="act-reply">Reply</span><span>·</span><span>35 min</span></div>
+          </div>
+          <div class="likes-pill">17</div>
+        </div>
+
+        <div class="comment">
+          <img class="avatar" src="images/user9-1.webp" alt="Olivia Moore">
+          <div class="comment-body">
+            <div class="comment-bubble">
+              <div class="comment-name">Olivia Moore</div>
+              <p class="comment-text">I've been using this gelatin trick for just over 3 weeks, and my belly fat is literally melting off! Even my husband noticed and complimented me today!</p>
+            </div>
+            <div class="comment-actions"><span class="act-like" onclick="likeThis(this)">Like</span><span>·</span><span class="act-reply">Reply</span><span>·</span><span>7 min</span></div>
+          </div>
+          <div class="likes-pill">11</div>
+        </div>
+
+        <div class="comment">
+          <img class="avatar" src="images/user1-3.webp" alt="Jessica Brown">
+          <div class="comment-body">
+            <div class="comment-bubble">
+              <div class="comment-name">Jessica Brown</div>
+              <p class="comment-text">Finally, someone explained a solution that melts fat without all the medical jargon! I'm starting the gelatin trick this morning—thank you for being so clear!</p>
+            </div>
+            <div class="comment-actions"><span class="act-like" onclick="likeThis(this)">Like</span><span>·</span><span class="act-reply">Reply</span><span>·</span><span>6 min</span></div>
+          </div>
+          <div class="likes-pill">32</div>
+        </div>
+
+        <div class="comment">
+          <img class="avatar" src="images/user1-1.webp" alt="Jennifer Taylor">
+          <div class="comment-body">
+            <div class="comment-bubble">
+              <div class="comment-name">Jennifer Taylor</div>
+              <p class="comment-text">My binge eating used to control me. But after starting the gelatin trick, I don't crave sweets anymore. I've already melted 19 pounds in two weeks—it feels amazing!</p>
+            </div>
+            <div class="comment-actions"><span class="act-like" onclick="likeThis(this)">Like</span><span>·</span><span class="act-reply">Reply</span><span>·</span><span>5 min</span></div>
+          </div>
+          <div class="likes-pill">6</div>
+        </div>
+
+        <div class="comment reply">
+          <img class="avatar" src="images/user2.webp" alt="Emily Johnson">
+          <div class="comment-body">
+            <div class="comment-bubble">
+              <div class="comment-name">Emily Johnson</div>
+              <p class="comment-text"><span class="mention">Jennifer Taylor</span> That's insane! Did you change anything else or just the gelatin trick?</p>
+            </div>
+            <div class="comment-actions"><span class="act-like" onclick="likeThis(this)">Like</span><span>·</span><span class="act-reply">Reply</span><span>·</span><span>1h</span></div>
+          </div>
+          <div class="likes-pill">34</div>
+        </div>
+
+        <div class="comment reply">
+          <img class="avatar" src="images/user1-1.webp" alt="Jennifer Taylor">
+          <div class="comment-body">
+            <div class="comment-bubble">
+              <div class="comment-name">Jennifer Taylor</div>
+              <p class="comment-text"><span class="mention">Emily Johnson</span> Nothing else—just the gelatin trick! No diet, no gym. It's wild how much fat I'm melting!</p>
+            </div>
+            <div class="comment-actions"><span class="act-like" onclick="likeThis(this)">Like</span><span>·</span><span class="act-reply">Reply</span><span>·</span><span>1h</span></div>
+          </div>
+          <div class="likes-pill">32</div>
+        </div>
+
+        <div class="comment">
+          <img class="avatar" src="images/user2-2.webp" alt="Ashley Davis">
+          <div class="comment-body">
+            <div class="comment-bubble">
+              <div class="comment-name">Ashley Davis</div>
+              <p class="comment-text">Does anyone know if this gelatin trick really works? I'm extremely overweight and feeling desperate!</p>
+            </div>
+            <div class="comment-actions"><span class="act-like" onclick="likeThis(this)">Like</span><span>·</span><span class="act-reply">Reply</span><span>·</span><span>1h</span></div>
+          </div>
+          <div class="likes-pill">34</div>
+        </div>
+
+        <div class="comment reply">
+          <img class="avatar" src="images/user9.webp" alt="Morgan Rose">
+          <div class="comment-body">
+            <div class="comment-bubble">
+              <div class="comment-name">Morgan Rose</div>
+              <p class="comment-text"><span class="mention">Ashley Davis</span> Yes! I looked it up—there are studies backing it. My belly fat is melting away thanks to this gelatin trick. Give it a try!</p>
+            </div>
+            <div class="comment-actions"><span class="act-like" onclick="likeThis(this)">Like</span><span>·</span><span class="act-reply">Reply</span><span>·</span><span>1h</span></div>
+          </div>
+          <div class="likes-pill">31</div>
+        </div>
+
+        <div class="comment">
+          <img class="avatar" src="images/user3.webp" alt="Natalie Clark">
+          <div class="comment-body">
+            <div class="comment-bubble">
+              <div class="comment-name">Natalie Clark</div>
+              <p class="comment-text">This is the most honest solution I've seen. No long videos, no upsells—just a simple gelatin trick that melts belly fat. Thank you so much!</p>
+            </div>
+            <div class="comment-actions"><span class="act-like" onclick="likeThis(this)">Like</span><span>·</span><span class="act-reply">Reply</span><span>·</span><span>1h</span></div>
+          </div>
+          <div class="likes-pill">54</div>
+        </div>
+
+        <div class="comment">
+          <img class="avatar" src="images/user3-2.webp" alt="Chloe Garcia">
+          <div class="comment-body">
+            <div class="comment-bubble">
+              <div class="comment-name">Chloe Garcia</div>
+              <p class="comment-text">After 3 weeks with the gelatin trick, my belly is flat like a board. I've melted 26 pounds without dieting—I feel lighter and more beautiful already!</p>
+            </div>
+            <div class="comment-actions"><span class="act-like" onclick="likeThis(this)">Like</span><span>·</span><span class="act-reply">Reply</span><span>·</span><span>1h</span></div>
+          </div>
+          <div class="likes-pill">59</div>
+        </div>
+
+        <p class="comments-closed">This post is no longer receiving comments.</p>
+      </div>
+    </section>
+
+  </div><!-- /container -->
+</main>
+
+<div class="footer-tags">
+  <span>&#169; CNN Health</span>&nbsp;|&nbsp;
+  <a href="#">Terms of Use</a>
+  <a href="#">Privacy Policy</a>
+  <a href="#">About CNN</a>
+  <a href="#">Advertise with us</a>
 </div>
 
-<main class="main-wrap">
+<!-- ============================================================
+     VTURB PLAYER SCRIPT
+     ============================================================ -->
+<script type="text/javascript">
+  var s = document.createElement("script");
+  s.src = "https://scripts.converteai.net/6e3ae2f6-ad64-483b-9bc5-bafc50ec8005/players/69bc95e8d54d8d20f10299e7/v4/player.js";
+  s.async = true;
+  document.head.appendChild(s);
+</script>
 
-  <!-- VIDEO -->
-  <div class="video-wrap">
-    <vturb-smartplayer id="vid-69bc95e8d54d8d20f10299e7" style="display: block; margin: 0 auto; width: 100%; "></vturb-smartplayer> <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/6e3ae2f6-ad64-483b-9bc5-bafc50ec8005/players/69bc95e8d54d8d20f10299e7/v4/player.js", s.async=!0,document.head.appendChild(s); </script>
-  </div>
 
-  <!-- LIVE COUNT -->
-  <div class="live-bar">
-    <span class="live-dot"><span class="live-dot__ping"></span><span class="live-dot__solid"></span></span>
-    <span class="live-text"><span id="viewer-count">8.613</span> people watching now</span>
-  <script>
-  (function(){
-    function fmt(n){return n.toLocaleString('en-US').replace(',','.')}
-    var el=document.getElementById('viewer-count');
-    var count=Math.floor(Math.random()*(9500-8500+1))+8500;
-    el.textContent=fmt(count);
+<!-- ============================================================
+     VTURB DELAY — padrao oficial
+     Quiz (.esconder) aparece no tempo abaixo.
+     Altere delaySeconds para o segundo exato do seu video.
+     Exemplo: minuto 36:54 = (36 x 60) + 54 = 2214
+     ============================================================ -->
+<script type="text/javascript">
+  var delaySeconds = 3736; // <- altere aqui
 
-    function nextTick(){
-      // Sobe entre +15 e +80, desce esporadicamente entre -5 e -25
-      var goUp=Math.random()<0.78; // 78% das vezes sobe
-      var delta=goUp
-        ? Math.floor(Math.random()*66)+15   // +15 a +80
-        : -(Math.floor(Math.random()*21)+5); // -5 a -25
-      count+=delta;
-      if(count<8500)count=8500;
-      if(count>12000)count=12000;
-      el.textContent=fmt(count);
-      // Próximo tick entre 1.5s e 4.5s (irregular = mais real)
-      setTimeout(nextTick, Math.floor(Math.random()*3000)+1500);
-    }
-    setTimeout(nextTick, Math.floor(Math.random()*2000)+1000);
-  })();
-  </script>
-  </div>
-
-  <!-- LOGOS -->
-  <div class="logos-bar">
-    <div class="logos-bar__inner">
-      <img src="images/abc_logo.webp" alt="ABC" loading="lazy" width="80" height="48">
-      <img src="images/cnn_logo.webp" alt="CNN" loading="lazy" width="80" height="48">
-      <img src="images/nbc_logo.webp" alt="NBC" loading="lazy" width="80" height="48">
-      <img src="images/cbs_logo.svg"  alt="CBS" loading="lazy" width="80" height="48">
-    </div>
-  </div>
-
-  <!-- VTURB reveal trigger -->
-  <script>
-  var delaySeconds=3738;
-  var player=document.querySelector("vturb-smartplayer");
-  player.addEventListener("player:ready",function(){
-    player.displayHiddenElements(delaySeconds,[".esconder"],{persist:true});
+  var player = document.querySelector("vturb-smartplayer");
+  player.addEventListener("player:ready", function () {
+    player.displayHiddenElements(delaySeconds, [".esconder"], {
+      persist: true
+    });
   });
-  </script>
+</script>
 
-  <!-- PITCH (hidden until vturb reveal) -->
-  <section id="secao_pitch" class="esconder pitch">
-    <h2 class="pitch__title">Special Offer</h2>
-    <p class="pitch__sub">Choose your package</p>
-    <div class="cards">
+<!-- ============================================================
+     APP SCRIPTS
+     ============================================================ -->
+<script>
+/* Datas dinamicas */
+(function () {
+  var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  var d = new Date();
+  var m = months[d.getMonth()];
+  document.getElementById('dynamic-month').textContent = m;
+  document.getElementById('dynamic-date').textContent = m + ' ' + d.getFullYear();
+})();
 
-      <!-- 6 BOTTLES -->
-      <div class="card card--best">
-        <div class="card__badge card__badge--best">BEST VALUE!</div>
-        <h3 class="card__name">6 BOTTLES</h3>
-        <div class="card__days">180 Day Supply</div>
-        <img src="images/jellylean-6.webp" alt="6 bottles" loading="lazy" width="200" height="160">
-        <div class="card__was">$799</div>
-        <div class="price-wrap"><span class="price-curr">$</span><span class="price-num">294</span></div>
-        <div class="card__ship">FREE SHIPPING</div>
-        <ul class="card__list">
-          <li class="best-li"><i class="fa-solid fa-star"></i> YOU SAVE $505</li>
-          <li><i class="fa-solid fa-circle-check"></i> 63% DISCOUNT</li>
-          <li><i class="fa-solid fa-circle-check"></i> 3 FREE BOTTLES</li>
-          <li class="gift-li"><i class="fa-solid fa-gift"></i> + SURPRISE 🎁</li>
-        </ul>
-        <a class="btn-buy smartplayer-click-event" href="https://jellylean.pay.clickbank.net/?cbitems=JLLN06FE&cbfid=62643&template=jellylean6&campaignkey=pg-cyb--kit-kit3--funnelid-dtcfunnel&affiliate=gdctrlc">
-          BUY NOW <i class="fa-solid fa-arrow-right"></i>
-        </a>
-        <div class="card__guarantee"><i class="fa-solid fa-shield-halved"></i> 90 DAYS GUARANTEE</div>
-        <div class="card__total">Billed as one payment</div>
-      </div>
+/* Menu mobile */
+document.getElementById('menuBtn').addEventListener('click', function () {
+  document.getElementById('mobileMenu').classList.toggle('open');
+});
 
-      <!-- 3 BOTTLES -->
-      <div class="card">
-        <div class="card__badge">Most Popular</div>
-        <h3 class="card__name">3 BOTTLES</h3>
-        <div class="card__days">90 Day Supply</div>
-        <img src="images/jellylean-3.webp" alt="3 bottles" loading="lazy" width="200" height="160">
-        <div class="card__was">$347</div>
-        <div class="price-wrap"><span class="price-curr">$</span><span class="price-num">217</span></div>
-        <div class="card__ship">FREE SHIPPING</div>
-        <ul class="card__list">
-          <li class="best-li"><i class="fa-solid fa-circle-check"></i> YOU SAVE $130!</li>
-          <li><i class="fa-solid fa-check"></i> 1 FREE BOTTLE</li>
-          <li><i class="fa-solid fa-check"></i> 37% DISCOUNT</li>
-        </ul>
-        <a class="btn-buy smartplayer-click-event" href="https://jellylean.pay.clickbank.net/?cbitems=JLLN03FE&cbfid=62643&template=jellylean3&campaignkey=pg-cyb--kit-kit2--funnelid-dtcfunnel&affiliate=gdctrlc">
-          BUY NOW <i class="fa-solid fa-arrow-right"></i>
-        </a>
-        <div class="card__guarantee"><i class="fa-solid fa-shield-halved"></i> 90 DAYS GUARANTEE</div>
-        <div class="card__total">Total: <s>$347</s> <strong>$217</strong></div>
-      </div>
+/* ---- QUIZ ---- */
+var quizStep   = 0;
+var totalSteps = 6;
+var selParts   = [];
 
-      <!-- 2 BOTTLES -->
-      <div class="card">
-        <div class="card__badge">Basic</div>
-        <h3 class="card__name">2 BOTTLES</h3>
-        <div class="card__days">60 Day Supply</div>
-        <img src="images/jellylean-2.webp" alt="2 bottles" loading="lazy" width="200" height="160">
-        <div class="card__was">$217</div>
-        <div class="price-wrap"><span class="price-curr">$</span><span class="price-num">177</span></div>
-        <div class="card__ship card__ship--paid">+ $9.99 SHIPPING</div>
-        <ul class="card__list">
-          <li class="best-li"><i class="fa-solid fa-circle-check"></i> YOU SAVE $28!</li>
-          <li><i class="fa-solid fa-check"></i> 15% DISCOUNT</li>
-        </ul>
-        <a class="btn-buy smartplayer-click-event" href="https://jellylean.pay.clickbank.net/?cbitems=JLLN02FE&cbfid=62643&template=jellylean2&campaignkey=pg-cyb--kit-kit1--funnelid-dtcfunnel&affiliate=gdctrlc">
-          BUY NOW <i class="fa-solid fa-arrow-right"></i>
-        </a>
-        <div class="card__guarantee"><i class="fa-solid fa-shield-halved"></i> 90 DAYS GUARANTEE</div>
-        <div class="card__total">Total: <s>$217</s> <strong>$168</strong></div>
-      </div>
+function goStep(n) {
+  document.getElementById('qstep' + quizStep).classList.remove('active');
+  quizStep = n;
+  document.getElementById('qstep' + quizStep).classList.add('active');
+  updateProgress();
+  if (n === 6) startCountdown();
+  setTimeout(function () {
+    var qo = document.getElementById('quiz-outer');
+    window.scrollTo({ top: qo.offsetTop - 70, behavior: 'smooth' });
+  }, 50);
+}
 
-    </div>
-  </section>
+function updateProgress() {
+  var pw = document.getElementById('progressWrap');
+  if (quizStep === 0 || quizStep >= 7) { pw.style.display = 'none'; return; }
+  pw.style.display = 'block';
+  var pct = Math.round(((quizStep - 1) / (totalSteps - 1)) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progCurrent').textContent = quizStep;
+  document.getElementById('progTotal').textContent = totalSteps;
+  document.getElementById('progPct').textContent = pct;
+}
 
-  <!-- COMMENTS -->
-  <section class="comments">
-    <div class="comments__header">
-      <span class="comments__count">3,158 Comments</span>
-      <div class="comments__sort">Sort by <span>Top</span></div>
-    </div>
+function pickOption(el, stepNum, nextStepNum) {
+  el.parentElement.querySelectorAll('.option-card').forEach(function (c) { c.classList.remove('selected'); });
+  el.classList.add('selected');
+  setTimeout(function () { goStep(nextStepNum); }, 380);
+}
 
-    <!-- Avatares inline via SVG — zero requisições externas -->
-    <div class="thread">
+function toggleBody(el) {
+  el.classList.toggle('selected');
+  var text = el.textContent.trim();
+  if (el.classList.contains('selected')) {
+    selParts.push(text);
+  } else {
+    selParts = selParts.filter(function (p) { return p !== text; });
+  }
+  var btn = document.getElementById('btnCalc');
+  btn.style.opacity = selParts.length > 0 ? '1' : '.4';
+  btn.style.pointerEvents = selParts.length > 0 ? 'auto' : 'none';
+}
 
-      <!-- Comment 1 -->
-      <div>
-        <div class="comment">
-          <div class="avatar"><img src="images/Abigail.jpeg" alt="Abigail Walker" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Abigail Walker</div>
-              <div class="bubble__text">I swear I thought this was just another one of those long, boring scam videos… But hearing Jillian Michaels explain the true gelatin trick actually made me stay and watch. This finally feels different.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">42</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">2h</span></div>
-          </div>
-        </div>
-        <div class="comment comment--reply">
-          <div class="avatar avatar--sm"><img src="images/Katherine.jpeg" alt="Katherine Lewis" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Katherine Lewis</div>
-              <div class="bubble__text">Same here. When she said most gelatin recipes were taught wrong on purpose, it clicked instantly.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">28</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">1h</span></div>
-          </div>
-        </div>
-        <div class="comment comment--reply">
-          <div class="avatar avatar--sm"><img src="images/Amanda.jpeg" alt="Amanda Miller" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Amanda Miller</div>
-              <div class="bubble__text">Exactly. I've wasted hours on fake videos before. This one felt like Jillian was calling out the scams directly.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">23</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">45m</span></div>
-          </div>
-        </div>
-      </div>
+function startCountdown() {
+  var n  = 6;
+  var el = document.getElementById('cdNum');
+  var t  = setInterval(function () {
+    n--;
+    el.textContent = n;
+    if (n <= 0) { clearInterval(t); goStep(7); }
+  }, 1000);
+}
 
-      <!-- Comment 2 -->
-      <div>
-        <div class="comment">
-          <div class="avatar"><img src="images/Suzy.jpeg" alt="Suzy Green" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Suzy Green</div>
-              <div class="bubble__text">Honest question… is this legit or just another marketing hype?</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">45</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">3h</span></div>
-          </div>
-        </div>
-        <div class="comment comment--reply">
-          <div class="avatar avatar--sm"><img src="images/Alyssa.jpeg" alt="Alyssa Stewart" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Alyssa Stewart</div>
-              <div class="bubble__text">I asked myself the same thing. I stayed skeptical until Jillian explained why the fake gelatin tricks never worked.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">31</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">2h</span></div>
-          </div>
-        </div>
-        <div class="comment comment--reply">
-          <div class="avatar avatar--sm"><img src="images/Jordan.jpeg" alt="Jordan Baker" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Jordan Baker</div>
-              <div class="bubble__text">The part about losing 14 pounds in 10 days with the correct gelatin recipe is what made me keep watching.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">38</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">2h</span></div>
-          </div>
-        </div>
-      </div>
+/* ---- Revela produtos apos quiz concluido ---- */
+function showProducts() {
+  var qo = document.getElementById('quiz-outer');
+  var ps = document.getElementById('products-section');
 
-      <!-- Comment 3 -->
-      <div>
-        <div class="comment">
-          <div class="avatar"><img src="images/Victoria.jpeg" alt="Victoria Clark" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Victoria Clark</div>
-              <div class="bubble__text">It's not even about the scale for me. After watching Jillian explain the real gelatin trick, I finally understood why nothing worked before.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">48</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">4h</span></div>
-          </div>
-        </div>
-        <div class="comment comment--reply">
-          <div class="avatar avatar--sm"><img src="images/Sarah.jpeg" alt="Sarah Smith" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Sarah Smith</div>
-              <div class="bubble__text">Yes! My appetite dropped so fast it honestly scared me at first.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">33</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">3h</span></div>
-          </div>
-        </div>
-      </div>
+  /* Anima saida do quiz */
+  qo.style.transition = 'opacity .5s, transform .5s';
+  qo.style.opacity    = '0';
+  qo.style.transform  = 'translateY(-20px)';
 
-      <!-- Comment 4 -->
-      <div>
-        <div class="comment">
-          <div class="avatar"><img src="images/Rachel.jpeg" alt="Rachel Thomas" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Rachel Thomas</div>
-              <div class="bubble__text">I've tried diets, workouts, fasting… everything. Nothing made sense until Jillian Michaels broke down the true gelatin method and why scammers remove key ingredients.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">48</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">1d</span></div>
-          </div>
-        </div>
-        <div class="comment comment--reply">
-          <div class="avatar avatar--sm"><img src="images/Lauren.jpeg" alt="Lauren Johnson" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Lauren Johnson</div>
-              <div class="bubble__text">I started 8 days ago after watching this. Down 11 pounds already.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">41</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">1d</span></div>
-          </div>
-        </div>
-        <div class="comment comment--reply">
-          <div class="avatar avatar--sm"><img src="images/Savannah.jpeg" alt="Savannah Perry" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Savannah Perry</div>
-              <div class="bubble__text">I'm further in. About 27 pounds in 15 days. What shocked me most was how full I feel all day.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">48</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">1d</span></div>
-          </div>
-        </div>
-      </div>
+  setTimeout(function () {
+    qo.style.display = 'none';
 
-      <!-- Comment 5 -->
-      <div>
-        <div class="comment">
-          <div class="avatar"><img src="images/Melissa.jpeg" alt="Melissa Richardson" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Melissa Richardson</div>
-              <div class="bubble__text">I almost closed the video when I saw how long it was. Glad I didn't. Jillian exposing the fake gelatin recipes hooked me instantly.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">46</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">1d</span></div>
-          </div>
-        </div>
-        <div class="comment comment--reply">
-          <div class="avatar avatar--sm"><img src="images/Hailey.jpeg" alt="Hailey Foster" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Hailey Foster</div>
-              <div class="bubble__text">Same. Once she said scammers were selling flour capsules, I knew she was serious.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">35</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">1d</span></div>
-          </div>
-        </div>
-      </div>
+    /* Exibe produtos com fade-in */
+    ps.style.opacity    = '0';
+    ps.style.display    = 'block';
+    ps.style.transition = 'opacity .6s ease';
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        ps.style.opacity = '1';
+      });
+    });
 
-      <!-- Comment 6 -->
-      <div>
-        <div class="comment">
-          <div class="avatar"><img src="images/Nicole.jpeg" alt="Nicole Patterson" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Nicole Patterson</div>
-              <div class="bubble__text">The craziest part is realizing the gelatin trick itself wasn't the scam — the distorted versions were.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">45</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">2d</span></div>
-          </div>
-        </div>
-        <div class="comment comment--reply">
-          <div class="avatar avatar--sm"><img src="images/Abigail.jpeg" alt="Abigail Walker" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Abigail Walker</div>
-              <div class="bubble__text">Exactly. Jillian being the original creator changes everything.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">27</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">2d</span></div>
-          </div>
-        </div>
-      </div>
+    /* Scroll suave ate os produtos */
+    setTimeout(function () {
+      window.scrollTo({ top: ps.offsetTop - 70, behavior: 'smooth' });
+    }, 100);
+  }, 480);
+}
 
-      <!-- Comment 7 -->
-      <div>
-        <div class="comment">
-          <div class="avatar"><img src="images/Emily.jpeg" alt="Emily Rodriguez" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Emily Rodriguez</div>
-              <div class="bubble__text">I stayed because Jillian mentioned women losing 50+ pounds once the hormones activate naturally. That's when I grabbed my notebook.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">48</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">2d</span></div>
-          </div>
-        </div>
-        <div class="comment comment--reply">
-          <div class="avatar avatar--sm"><img src="images/Sophia.jpeg" alt="Sophia Martinez" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Sophia Martinez</div>
-              <div class="bubble__text">Same. She explains it in a way that finally makes sense.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">30</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">2d</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Comment 8 -->
-      <div>
-        <div class="comment">
-          <div class="avatar"><img src="images/Hailey.jpeg" alt="Hailey Foster" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Hailey Foster</div>
-              <div class="bubble__text">Honestly, after hearing Jillian Michaels explain why GLP-1 and GIP matter, I realized no diet ever fixed the real problem.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">45</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">2d</span></div>
-          </div>
-        </div>
-        <div class="comment comment--reply">
-          <div class="avatar avatar--sm"><img src="images/Victoria.jpeg" alt="Victoria Clark" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Victoria Clark</div>
-              <div class="bubble__text">That explanation alone was worth watching the whole video.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">30</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">2d</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Comment 9 -->
-      <div>
-        <div class="comment">
-          <div class="avatar"><img src="images/Amanda.jpeg" alt="Amanda Miller" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Amanda Miller</div>
-              <div class="bubble__text">With so many scams online, it's rare to see someone openly calling them out. Jillian didn't just sell hope — she explained why we were all misled.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">49</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">2d</span></div>
-          </div>
-        </div>
-        <div class="comment comment--reply">
-          <div class="avatar avatar--sm"><img src="images/Rachel.jpeg" alt="Rachel Thomas" loading="lazy" width="36" height="36" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-          <div>
-            <div class="bubble">
-              <div class="bubble__author">Rachel Thomas</div>
-              <div class="bubble__text">Exactly. This finally feels like the true gelatin trick, not another trap.</div>
-              <div class="bubble__likes"><div class="bubble__likes-icon"></div><span class="bubble__likes-count">32</span></div>
-            </div>
-            <div class="comment__actions"><button>Like</button> · <button>Reply</button> · <span class="comment__time">2d</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="comments__closed">
-        <p>This post is no longer receiving comments.</p>
-      </div>
-    </div>
-  </section>
-
-  <footer class="site-footer">
-    <p class="site-footer__disclaimer">
-      *This product is not intended to diagnose, treat, cure, or prevent any disease. Results may vary.
-      This is an advertorial and not a news article. Images used for illustrative purposes only.
-    </p>
-    <div class="site-footer__links">
-      <a href="#">Terms &amp; Conditions</a>
-      <a href="#">Privacy Policy</a>
-      <a href="#">Contact Us</a>
-    </div>
-    <p class="site-footer__copy">© 2026 Health News. All rights reserved.</p>
-  </footer>
-
-</main>
+/* ---- Like nos comentarios ---- */
+function likeThis(el) {
+  if (el.classList.contains('liked')) {
+    el.classList.remove('liked');
+    el.textContent = 'Like';
+  } else {
+    el.classList.add('liked');
+    el.textContent = 'Liked';
+  }
+}
+</script>
 
 <!-- Tracking lazy (dispara no primeiro scroll/clique ou em 3s) -->
 <script>
@@ -649,6 +898,7 @@ setTimeout(_loadTracking,3000);
 </script>
 
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=901335525837933&ev=PageView&noscript=1"/></noscript>
+    
 
 </body>
 </html>
